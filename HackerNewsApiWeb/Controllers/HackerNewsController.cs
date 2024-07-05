@@ -1,4 +1,5 @@
 ﻿using HackerNewsApiWeb.Models;
+using HackerNewsApiWeb.Repository;
 using HackerNewsApiWeb.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -9,12 +10,15 @@ namespace HackerNewsApiWeb.Controllers
     [ApiController]
     public class HackerNewsController : ControllerBase
     {
+
+
         private readonly IHackerNewsService _hackerNewsService;
+
         public HackerNewsController(IHackerNewsService hackerNewsService)
         {
             _hackerNewsService = hackerNewsService;
         }
-       
+
         /// <summary>
         /// API to get new stories
         /// </summary>

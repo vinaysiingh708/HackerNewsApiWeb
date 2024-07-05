@@ -1,3 +1,4 @@
+using HackerNewsApiWeb.Repository;
 using HackerNewsApiWeb.Services;
 using Microsoft.Extensions.Logging;
 
@@ -9,6 +10,7 @@ var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
 builder.Services.AddHttpClient();
 builder.Services.AddScoped<IHackerNewsService, HackerNewsService>();
+builder.Services.AddScoped<IHackerNewsRepository, HackerNewsRepository>();
 builder.Services.AddMemoryCache();
 // Configure logging
 builder.Logging.ClearProviders();
