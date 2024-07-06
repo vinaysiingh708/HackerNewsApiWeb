@@ -28,11 +28,19 @@ namespace HackerNewsApiWeb.Controllers
         [HttpGet("newstories")]
         public async Task<IActionResult> GetNewStories()
         {
-            var newStories = await _hackerNewsService.GetNewStoriesAsync();
-            if (newStories == null || newStories.Count == 0)
-                return NotFound();
+            try
+            {
+                var newStories = await _hackerNewsService.GetNewStoriesAsync();
+                if (newStories == null || newStories.Count == 0)
+                    return NotFound();
 
-            return Ok(newStories);
+                return Ok(newStories);
+            }
+            catch (Exception ex)
+            {
+                // Log exception (ex) here if needed
+                return StatusCode(500, "Internal server error");
+            }
         }
 
         

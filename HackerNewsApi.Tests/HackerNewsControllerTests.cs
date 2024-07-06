@@ -54,5 +54,21 @@ namespace HackerNewsApi.Tests
             Assert.Equal(404, statusCodeResult.StatusCode);           
         }
 
+        [Fact]
+        public async Task GetNewStories_ReturnsInternalServerError_OnException()
+        {
+            // Arrange
+            _mockHackerNewsService.Setup(service => service.GetNewStoriesAsync())
+                .ThrowsAsync(new Exception("Internal server error"));
+
+            // Act
+            var result = await _controller.GetNewStories();
+
+            // Assert
+            var statusCodeResult = Assert.IsType<ObjectResult>(result);
+            Assert.Equal(500, statusCodeResult.StatusCode);
+            Assert.Equal("Internal server error", statusCodeResult.Value);
+        }
+
     }
 }
