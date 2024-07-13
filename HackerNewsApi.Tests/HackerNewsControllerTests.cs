@@ -1,8 +1,8 @@
 using Moq;
 using Microsoft.AspNetCore.Mvc;
 using HackerNewsApiWeb.Controllers;
-using HackerNewsApiWeb.Services;
 using HackerNewsApiWeb.Models;
+using Repository.Service;
 
 namespace HackerNewsApi.Tests
 {

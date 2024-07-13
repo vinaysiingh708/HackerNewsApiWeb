@@ -1,19 +1,18 @@
 ﻿using HackerNewsApiWeb.Models;
-using HackerNewsApiWeb.Services;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
-using System.Net.Http;
+using System.Net.Http.Json;
 
-namespace HackerNewsApiWeb.Repository
+namespace Repository.Service
 {
-    public class HackerNewsRepository : IHackerNewsRepository
+    public class HackerNewsService : IHackerNewsService
     {
         private readonly HttpClient _httpClient;
         private readonly IMemoryCache _cache;
         private const string BaseUrl = "https://hacker-news.firebaseio.com/v0/";
-        private readonly ILogger<HackerNewsRepository> _logger;
+        private readonly ILogger<HackerNewsService> _logger;
 
-        public HackerNewsRepository(HttpClient httpClient,IMemoryCache cache, ILogger<HackerNewsRepository> logger)
+        public HackerNewsService(HttpClient httpClient, IMemoryCache cache, ILogger<HackerNewsService> logger)
         {
             _httpClient = httpClient;
             _cache = cache;
@@ -42,8 +41,8 @@ namespace HackerNewsApiWeb.Repository
 
                 stories = new List<NewsStory>();
                 if (storiesIds != null)
-                {                   
-                    var paginatedIds = storiesIds.Take(200).ToList();                                                   
+                {
+                    var paginatedIds = storiesIds.Take(200).ToList();
                     await Task.WhenAll(
                         paginatedIds.Select(async id =>
                         {
@@ -54,7 +53,7 @@ namespace HackerNewsApiWeb.Repository
                                 stories.Add(story);
                             }
                         }).ToArray()
-                    );                    
+                    );
                 }
                 else
                 {

@@ -1,19 +1,20 @@
 ﻿using HackerNewsApiWeb.Models;
-using HackerNewsApiWeb.Repository;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using Moq;
 using Moq.Protected;
+using Repository.Service;
 using System.Net;
 using System.Text.Json;
 
 
 namespace HackerNewsApiWeb.Tests
 {
-    public class HackerNewsRepositoryTests
+    public class HackerNewsServiceTests
     {
         [Fact]
-        public async Task GetNewStoriesAsync_ShouldReturnStories_WhenApiReturnsData()
+        public async Task GetNewStoriesAsync_ShouldReturnEmpty_WhenApiReturnsNoData()
         {
             // Arrange
             var mockHttpMessageHandler = new Mock<HttpMessageHandler>();
@@ -30,18 +31,7 @@ namespace HackerNewsApiWeb.Tests
                         return new HttpResponseMessage
                         {
                             StatusCode = HttpStatusCode.OK,
-                            Content = new StringContent(JsonSerializer.Serialize(new List<int> { 1, 2, 3 }))
-                        };
-                    }
-                    else if (request.RequestUri.AbsolutePath.StartsWith("/v0/item/"))
-                    {
-                        var idString = request.RequestUri.AbsolutePath.Split('/').Last();
-                        var id = int.Parse(idString.Replace(".json", ""));
-                        var story = new NewsStory { Id = id, Title = $"Story {id}" };
-                        return new HttpResponseMessage
-                        {
-                            StatusCode = HttpStatusCode.OK,
-                            Content = new StringContent(JsonSerializer.Serialize(story))
+                            Content = new StringContent(JsonSerializer.Serialize(new List<int>()))
                         };
                     }
                     return new HttpResponseMessage(HttpStatusCode.NotFound);
@@ -61,9 +51,45 @@ namespace HackerNewsApiWeb.Tests
                 .Setup(mc => mc.CreateEntry(It.IsAny<object>()))
                 .Returns(cacheEntry.Object);
 
-            var mockLogger = new NullLogger<HackerNewsRepository>();
+            var mockLogger = new NullLogger<HackerNewsService>();
 
-            var hackerNewsRepository = new HackerNewsRepository(httpClient, mockMemoryCache.Object, mockLogger);
+            var hackerNewsRepository = new HackerNewsService(httpClient, mockMemoryCache.Object, mockLogger);
+
+            // Act
+            var stories = await hackerNewsRepository.GetNewStoriesAsync();
+
+            // Assert
+            Assert.NotNull(stories);
+            Assert.Empty(stories);
+        }
+
+        [Fact]
+        public async Task GetNewStoriesAsync_ShouldReturnCachedStories_WhenDataIsCached()
+        {
+            // Arrange
+            var mockHttpMessageHandler = new Mock<HttpMessageHandler>();
+
+            var httpClient = new HttpClient(mockHttpMessageHandler.Object)
+            {
+                BaseAddress = new Uri("https://hacker-news.firebaseio.com/")
+            };
+
+            var mockMemoryCache = new Mock<IMemoryCache>();
+            var cacheEntry = new Mock<ICacheEntry>();
+            var cachedStories = new List<NewsStory>
+    {
+        new NewsStory { Id = 1, Title = "Cached Story 1" },
+        new NewsStory { Id = 2, Title = "Cached Story 2" }
+    };
+
+            object cacheValue = cachedStories;
+            mockMemoryCache
+                .Setup(mc => mc.TryGetValue(It.IsAny<object>(), out cacheValue))
+                .Returns(true);
+
+            var mockLogger = new NullLogger<HackerNewsService>();
+
+            var hackerNewsRepository = new HackerNewsService(httpClient, mockMemoryCache.Object, mockLogger);
 
             // Act
             var stories = await hackerNewsRepository.GetNewStoriesAsync();
@@ -71,7 +97,10 @@ namespace HackerNewsApiWeb.Tests
             // Assert
             Assert.NotNull(stories);
             Assert.NotEmpty(stories);
-            Assert.Equal(3, stories.Count);
+            Assert.Equal(2, stories.Count);
+            Assert.Equal("Cached Story 1", stories[0].Title);
+            Assert.Equal("Cached Story 2", stories[1].Title);
         }
+
     }
 }

@@ -1,8 +1,6 @@
-﻿using HackerNewsApiWeb.Models;
-using HackerNewsApiWeb.Repository;
-using HackerNewsApiWeb.Services;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
+﻿using Microsoft.AspNetCore.Mvc;
+using Repository.Service;
+//using Repository.Service;
 
 namespace HackerNewsApiWeb.Controllers
 {
