@@ -39,6 +39,7 @@ if (app.Environment.IsDevelopment())
 if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
+    app.UseMiddleware<HackerNewsApi.Middlewares.ExceptionMiddleware>();
 }
 else
 {
