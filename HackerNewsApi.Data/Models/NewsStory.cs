@@ -1,4 +1,5 @@
-﻿namespace HackerNewsApiWeb.Models
+﻿
+namespace HackerNewsApi.Data.Models
 {
     public class NewsStory
     {

@@ -1,4 +1,4 @@
-﻿using HackerNewsApiWeb.Models;
+﻿using HackerNewsApi.Data.Models;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 using System.Net.Http.Json;

@@ -1,4 +1,4 @@
-﻿using HackerNewsApiWeb.Models;
+﻿using HackerNewsApi.Data.Models;
 
 namespace Repository.Service
 {
