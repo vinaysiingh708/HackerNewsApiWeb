@@ -8,8 +8,6 @@ namespace HackerNewsApiWeb.Controllers
     [ApiController]
     public class HackerNewsController : ControllerBase
     {
-
-
         private readonly IHackerNewsService _hackerNewsService;
 
         public HackerNewsController(IHackerNewsService hackerNewsService)
@@ -20,8 +18,6 @@ namespace HackerNewsApiWeb.Controllers
         /// <summary>
         /// API to get new stories
         /// </summary>
-        /// <param name="page"></param>
-        /// <param name="pageSize"></param>
         /// <returns></returns>
         [HttpGet("newstories")]
         public async Task<IActionResult> GetNewStories()
@@ -39,8 +35,6 @@ namespace HackerNewsApiWeb.Controllers
                 // Log exception (ex) here if needed
                 return StatusCode(500, "Internal server error");
             }
-        }
-
-        
+        }        
     }
 }
