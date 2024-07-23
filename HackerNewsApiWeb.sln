@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HackerNewsApiWeb", "HackerN
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HackerNewsApi.Tests", "HackerNewsApi.Tests\HackerNewsApi.Tests.csproj", "{CF7B209D-C58E-4D49-9C76-460A2738C41C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Repository", "Repository\Repository.csproj", "{AE593D66-8B12-4AAC-AB8E-5B5236880630}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HackerNewsApi.Repository", "Repository\HackerNewsApi.Repository.csproj", "{AE593D66-8B12-4AAC-AB8E-5B5236880630}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HackerNewsApi.Data", "HackerNewsApi.Data\HackerNewsApi.Data.csproj", "{43ACAF89-1C1F-452F-A329-E9570A527E5E}"
 EndProject
